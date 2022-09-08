@@ -5,7 +5,7 @@ export const FETCH_USER_INFO = 'FETCH_USER_INFO';
 export const FETCH_API_SUCCESS = 'FETCH_API_SUCCESS';
 export const FETCH_ERROR = 'FETCH_ERROR';
 
-export const userInfo = (email, name) => ({
+const userInfo = (email, name) => ({
   type: FETCH_USER_INFO,
   email,
   name,
@@ -21,12 +21,13 @@ const fetchError = (error) => ({
   error,
 });
 
-const userInfoThunk = () => async () => {
+const userInfoThunk = (email, name) => async (dispatch) => {
+  dispatch(userInfo(email, name));
   try {
     const PLAYER_TOKEN = await fetchPlayerToken();
     saveToken(PLAYER_TOKEN.token);
   } catch (error) {
-    fetchError(error.message);
+    dispatch(fetchError(error.message));
   }
 };
 
