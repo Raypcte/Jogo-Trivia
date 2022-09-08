@@ -4,7 +4,7 @@ import { func, shape } from 'prop-types';
 import logo from '../trivia.png';
 import '../App.css';
 import validateEmail from '../helpers/validate';
-import userInfoThunk, { userInfo } from '../redux/actions';
+import userInfoThunk from '../redux/actions';
 
 class Login extends Component {
   state = {
@@ -16,12 +16,11 @@ class Login extends Component {
     this.setState({ [name]: value });
   };
 
-  handleClick = async () => {
+  handleClick = () => {
     const { dispatch, history } = this.props;
     const { email, name } = this.state;
-    dispatch(userInfoThunk());
-    dispatch(userInfo(email, name));
     history.push('/game');
+    dispatch(userInfoThunk(email, name));
   };
 
   handleClickSettings = () => {
@@ -84,7 +83,7 @@ const mapStateToProps = ({ user }) => ({
 });
 
 Login.propTypes = {
-  history: shape().isRequired,
+  history: shape({}).isRequired,
   dispatch: func.isRequired,
 };
 
