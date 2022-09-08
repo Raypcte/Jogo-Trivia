@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { func, shape } from 'prop-types';
 import logo from '../trivia.png';
 import '../App.css';
 import validateEmail from '../helpers/validate';
+import userInfoThunk, { userInfo } from '../redux/actions';
 
 class Login extends Component {
   state = {
@@ -14,6 +16,19 @@ class Login extends Component {
     this.setState({ [name]: value });
   };
 
+  handleClick = async () => {
+    const { dispatch, history } = this.props;
+    const { email, name } = this.state;
+    dispatch(userInfoThunk());
+    dispatch(userInfo(email, name));
+    history.push('/game');
+  };
+
+  handleClickSettings = () => {
+    const { history } = this.props;
+    history.push('/settings');
+  };
+
   render() {
     const { email, name } = this.state;
     return (
@@ -22,7 +37,7 @@ class Login extends Component {
         <form>
           <label htmlFor="email">
             <input
-              data-testid="input-player-name"
+              data-testid="input-gravatar-email"
               type="email"
               name="email"
               id="email"
@@ -33,7 +48,7 @@ class Login extends Component {
           </label>
           <label htmlFor="name">
             <input
-              data-testid="input-gravatar-email"
+              data-testid="input-player-name"
               type="text"
               name="name"
               id="name"
@@ -46,10 +61,18 @@ class Login extends Component {
             data-testid="btn-play"
             type="button"
             disabled={ validateEmail(email) || !name }
+            onClick={ this.handleClick }
           >
             Play
           </button>
         </form>
+        <button
+          data-testid="btn-settings"
+          type="button"
+          onClick={ this.handleClickSettings }
+        >
+          settings
+        </button>
       </div>
     );
   }
@@ -59,5 +82,10 @@ const mapStateToProps = ({ user }) => ({
   email: user.email,
   name: user.name,
 });
+
+Login.propTypes = {
+  history: shape().isRequired,
+  dispatch: func.isRequired,
+};
 
 export default connect(mapStateToProps)(Login);
