@@ -6,7 +6,7 @@ export const FETCH_TIMER = 'FETCH_TIMER';
 export const FETCH_ANSWERED = 'FETCH_ANSWERED';
 export const FETCH_ERROR = 'FETCH_ERROR';
 export const FETCH_SCORE = 'FETCH_SCORE';
-export const FETCH_FEEDBACK = 'FETCH_FEEDBACK';
+export const FETCH_ASSERTIONS = 'FETCH_ASSERTIONS';
 
 const userInfo = (email, name) => ({
   type: FETCH_USER_INFO,
@@ -34,9 +34,9 @@ export const fetchScore = (score) => ({
   score,
 });
 
-export const fetchFeedback = (score) => ({
-  type: FETCH_FEEDBACK,
-  score,
+export const fetchAssertions = (assertions) => ({
+  type: FETCH_ASSERTIONS,
+  assertions,
 });
 
 const userInfoThunk = (email, name) => async (dispatch) => {

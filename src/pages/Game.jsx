@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import fetchPlayerToken, { fetchTriviaQuestions } from '../helpers/api';
 import Timer from '../components/Timer';
-import { fetchFeedback, fetchScore, questionAnswered } from '../redux/actions';
+import { fetchAssertions, fetchScore, questionAnswered } from '../redux/actions';
 import calculatePoints from '../helpers/pointsScored';
 
 class Game extends Component {
@@ -49,7 +49,7 @@ class Game extends Component {
         dispatch(fetchScore(score));
       });
       dispatch(questionAnswered(true));
-      dispatch(fetchFeedback(1));
+      dispatch(fetchAssertions(1));
       console.log('acertou');
       return true;
     }
