@@ -1,8 +1,11 @@
-import { shape, string } from 'prop-types';
+import { shape, string, func, number } from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
-import fetchPlayerToken from '../helpers/api';
+import fetchPlayerToken, { fetchTriviaQuestions } from '../helpers/api';
+import Timer from '../components/Timer';
+import { fetchScore, questionAnswered } from '../redux/actions';
+import calculatePoints from '../helpers/pointsScored';
 
 class Game extends Component {
   state = {
@@ -17,9 +20,7 @@ class Game extends Component {
     const { email, history } = this.props;
 
     const token = await fetchPlayerToken();
-    const endpoint = `https://opentdb.com/api.php?amount=5&token=${token.token}`;
-    const response = await fetch(endpoint);
-    const data = await response.json();
+    const data = await fetchTriviaQuestions(token);
     const ERROR_CODE = 3;
     if (data.response_code === ERROR_CODE || token.response_code === ERROR_CODE) {
       history.push('/');
@@ -37,18 +38,38 @@ class Game extends Component {
 
   handleClickAnswer = (answer) => {
     const { data, count } = this.state;
+    const { dispatch, timer } = this.props;
+    const POINTS = 10;
+    console.log(calculatePoints(data[count].difficulty));
     this.setState({ answered: true });
     if (answer === data[count].correct_answer) {
+      this.setState((prev) => ({ score: prev.score + (POINTS + (timer
+        + calculatePoints(data[count].difficulty)
+      )) }), () => {
+        const { score } = this.state;
+        dispatch(fetchScore(score));
+      });
+      dispatch(questionAnswered(true));
       console.log('acertou');
       return true;
     }
     console.log('errou');
+    dispatch(questionAnswered(true));
     return false;
+  };
+
+  handleNext = () => {
+    const { dispatch } = this.props;
+    const MAX_COUNT = 4;
+    this.setState((prev) => ({ count: prev.count <= MAX_COUNT
+      ? prev.count + 1 : prev.count }));
+    this.setState({ answered: false });
+    dispatch(questionAnswered(false));
   };
 
   render() {
     const { email, score, data, count, answered } = this.state;
-    const { name } = this.props;
+    const { name, timer } = this.props;
     const findResults = data.find((_, index) => index === count);
     let arrayAnswer;
     if (findResults) {
@@ -70,7 +91,6 @@ class Game extends Component {
             data-testid="header-score"
           >
             {score}
-
           </p>
         </header>
         <section>
@@ -103,6 +123,7 @@ class Game extends Component {
                       style={ {
                         border: answered && '3px solid rgb(6, 240, 15)',
                       } }
+                      disabled={ timer === 0 || answered }
                     >
                       {answer}
                     </button>
@@ -115,12 +136,23 @@ class Game extends Component {
                       style={ {
                         border: answered && '3px solid red',
                       } }
+                      disabled={ timer === 0 || answered }
                     >
                       {answer}
                     </button>
                   );
                 })}
               </section>
+              <Timer />
+              {answered && (
+                <button
+                  data-testid="btn-next"
+                  type="button"
+                  onClick={ this.handleNext }
+                >
+                  Next
+                </button>
+              )}
             </section>
           )}
       </div>
@@ -132,11 +164,14 @@ Game.propTypes = {
   history: shape().isRequired,
   email: string.isRequired,
   name: string.isRequired,
+  dispatch: func.isRequired,
+  timer: number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   email: state.user.email,
   name: state.user.name,
+  timer: state.trivia.timer,
 });
 
 export default connect(mapStateToProps)(Game);

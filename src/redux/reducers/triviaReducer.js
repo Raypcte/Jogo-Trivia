@@ -1,20 +1,21 @@
+import { FETCH_ANSWERED, FETCH_TIMER } from '../actions';
+
 const initialState = {
-  token: '',
-  error: null,
+  timer: 30,
+  answered: false,
 };
 
-const triviaReducer = (state = initialState, { type, payload, error }) => {
+const triviaReducer = (state = initialState, { type, timer, answered }) => {
   switch (type) {
-  case 'FETCH_API_SUCCESS':
-    console.log(payload);
+  case FETCH_TIMER:
     return {
       ...state,
-      token: payload,
+      timer,
     };
-  case 'FETCH_ERROR':
+  case FETCH_ANSWERED:
     return {
       ...state,
-      error,
+      answered,
     };
   default:
     return {
