@@ -6,6 +6,7 @@ export const FETCH_TIMER = 'FETCH_TIMER';
 export const FETCH_ANSWERED = 'FETCH_ANSWERED';
 export const FETCH_ERROR = 'FETCH_ERROR';
 export const FETCH_SCORE = 'FETCH_SCORE';
+export const FETCH_FEEDBACK = 'FETCH_FEEDBACK';
 
 const userInfo = (email, name) => ({
   type: FETCH_USER_INFO,
@@ -30,6 +31,11 @@ export const questionTimer = (timer) => ({
 
 export const fetchScore = (score) => ({
   type: FETCH_SCORE,
+  score,
+});
+
+export const fetchFeedback = (score) => ({
+  type: FETCH_FEEDBACK,
   score,
 });
 
