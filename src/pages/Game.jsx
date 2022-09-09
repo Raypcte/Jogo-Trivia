@@ -44,9 +44,6 @@ class Game extends Component {
       const NUMBER = 0.5;
       arrayAnswer = arrayAnswer.sort(() => Math.random() - NUMBER);
     }
-
-    console.log(arrayAnswer);
-    console.log(findResults);
     return (
       <div>
         Game page
