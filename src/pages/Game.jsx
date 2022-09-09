@@ -10,6 +10,7 @@ class Game extends Component {
     score: 0,
     data: [],
     count: 0,
+    answered: false,
   };
 
   async componentDidMount() {
@@ -34,8 +35,19 @@ class Game extends Component {
     history.push('/settings');
   };
 
+  handleClickAnswer = (answer) => {
+    const { data, count } = this.state;
+    this.setState({ answered: true });
+    if (answer === data[count].correct_answer) {
+      console.log('acertou');
+      return true;
+    }
+    console.log('errou');
+    return false;
+  };
+
   render() {
-    const { email, score, data, count } = this.state;
+    const { email, score, data, count, answered } = this.state;
     const { name } = this.props;
     const findResults = data.find((_, index) => index === count);
     let arrayAnswer;
@@ -84,17 +96,25 @@ class Game extends Component {
                   const currentIndex = arrayAnswer.indexOf(findResults.correct_answer);
                   return index === currentIndex ? (
                     <button
-                      type="button"
-                      data-testid="correct-answer"
                       key={ answer }
+                      data-testid="correct-answer"
+                      type="button"
+                      onClick={ () => this.handleClickAnswer(answer) }
+                      style={ {
+                        border: answered && '3px solid rgb(6, 240, 15)',
+                      } }
                     >
                       {answer}
                     </button>
                   ) : (
                     <button
-                      type="button"
                       key={ answer }
                       data-testid={ `wrong-answer-${count}` }
+                      type="button"
+                      onClick={ () => this.handleClickAnswer(answer) }
+                      style={ {
+                        border: answered && '3px solid red',
+                      } }
                     >
                       {answer}
                     </button>
