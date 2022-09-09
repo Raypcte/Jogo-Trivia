@@ -2,8 +2,10 @@ import fetchPlayerToken from '../helpers/api';
 import saveToken from '../helpers/localStorage';
 
 export const FETCH_USER_INFO = 'FETCH_USER_INFO';
-export const FETCH_API_SUCCESS = 'FETCH_API_SUCCESS';
+export const FETCH_TIMER = 'FETCH_TIMER';
+export const FETCH_ANSWERED = 'FETCH_ANSWERED';
 export const FETCH_ERROR = 'FETCH_ERROR';
+export const FETCH_SCORE = 'FETCH_SCORE';
 
 const userInfo = (email, name) => ({
   type: FETCH_USER_INFO,
@@ -11,14 +13,24 @@ const userInfo = (email, name) => ({
   name,
 });
 
-// const fetchSuccess = (payload) => ({
-//   type: FETCH_API_SUCCESS,
-//   payload,
-// });
-
 const fetchError = (error) => ({
   type: FETCH_ERROR,
   error,
+});
+
+export const questionAnswered = (answered) => ({
+  type: FETCH_ANSWERED,
+  answered,
+});
+
+export const questionTimer = (timer) => ({
+  type: FETCH_TIMER,
+  timer,
+});
+
+export const fetchScore = (score) => ({
+  type: FETCH_SCORE,
+  score,
 });
 
 const userInfoThunk = (email, name) => async (dispatch) => {

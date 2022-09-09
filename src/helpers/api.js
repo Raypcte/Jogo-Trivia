@@ -5,8 +5,11 @@ const fetchPlayerToken = async () => {
   return data;
 };
 
-// const fetchTriviaQuestions = async () => {
-
-// }
+export const fetchTriviaQuestions = async (token) => {
+  const endpoint = `https://opentdb.com/api.php?amount=5&token=${token.token}`;
+  const response = await fetch(endpoint);
+  const data = await response.json();
+  return data;
+};
 
 export default fetchPlayerToken;
