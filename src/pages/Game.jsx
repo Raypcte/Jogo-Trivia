@@ -40,7 +40,6 @@ class Game extends Component {
     const { data, count } = this.state;
     const { dispatch, timer } = this.props;
     const POINTS = 10;
-    console.log(calculatePoints(data[count].difficulty));
     this.setState({ answered: true });
     if (answer === data[count].correct_answer) {
       this.setState((prev) => ({ score: prev.score + (POINTS + (timer
@@ -59,8 +58,12 @@ class Game extends Component {
   };
 
   handleNext = () => {
-    const { dispatch } = this.props;
+    const { dispatch, history } = this.props;
+    const { count } = this.state;
     const MAX_COUNT = 4;
+    if (count === MAX_COUNT) {
+      history.push('/feedback');
+    }
     this.setState((prev) => ({ count: prev.count <= MAX_COUNT
       ? prev.count + 1 : prev.count }));
     this.setState({ answered: false });
