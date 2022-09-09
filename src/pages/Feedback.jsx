@@ -21,6 +21,7 @@ class Feedback extends Component {
     const MIN_SCORE = 3;
     return (
       <div>
+        Feedback page
         <header>
           <img
             src={ `https://www.gravatar.com/avatar/${email}` }
