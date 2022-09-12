@@ -4,13 +4,18 @@ import { func, shape } from 'prop-types';
 import logo from '../trivia.png';
 import '../App.css';
 import validateEmail from '../helpers/validate';
-import userInfoThunk from '../redux/actions';
+import userInfoThunk, { fetchScore } from '../redux/actions';
 
 class Login extends Component {
   state = {
     email: '',
     name: '',
   };
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(fetchScore(0));
+  }
 
   handleChange = ({ target: { name, value } }) => {
     this.setState({ [name]: value });

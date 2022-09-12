@@ -9,7 +9,15 @@ class Feedback extends Component {
   };
 
   componentDidMount() {
-    const { email } = this.props;
+    const { email, name, score } = this.props;
+    const gravatar = `https://www.gravatar.com/avatar/${md5(email).toString()}`;
+    const storage = JSON.parse(localStorage.getItem('ranking')) || [];
+    const rankingInfo = [
+      ...storage,
+      { name, score, picture: gravatar },
+    ];
+    localStorage.setItem('ranking', JSON.stringify(rankingInfo));
+
     this.setState({
       email: md5(email).toString(),
     });
