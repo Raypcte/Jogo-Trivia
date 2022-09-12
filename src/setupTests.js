@@ -5,4 +5,7 @@
 import '@testing-library/jest-dom/extend-expect';
 import MutationObserver from '@sheerun/mutationobserver-shim';
 
+const MAX_TIMEOUT = 40000;
+jest.setTimeout(MAX_TIMEOUT);
+
 window.MutationObserver = MutationObserver;
