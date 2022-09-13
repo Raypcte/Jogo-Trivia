@@ -3,6 +3,8 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "../App";
 import triviaSuccess, { triviaFailed } from "./mock";
+import React from "react";
+import Game from "../pages/Game";
 
 describe('Test the Game page', () => {
   const initialState = {
@@ -138,5 +140,38 @@ describe('Test the Game page', () => {
     expect(store.getState().trivia.answered).toBe(true);
     expect(await screen.findByTestId('btn-next')).toBeDefined();
     await waitFor(() => expect(console.log).toHaveBeenCalledWith('Else fela da...'), { timeout: 3000 });
+  });
+  test('Test if the player is redirect to the feedback page', async () => {
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(triviaSuccess),
+    });
+
+    const {  history } = renderWithRouterAndRedux(<App />, initialState, '/game');
+
+    userEvent.click(await screen.findByTestId('correct-answer'));
+    userEvent.click(screen.getByTestId('btn-next'));
+    userEvent.click(await screen.findByTestId('correct-answer'));
+    userEvent.click(screen.getByTestId('btn-next'));
+    userEvent.click(await screen.findByTestId('correct-answer'));
+    userEvent.click(screen.getByTestId('btn-next'));
+    userEvent.click(await screen.findByTestId('correct-answer'));
+    userEvent.click(screen.getByTestId('btn-next'));
+    userEvent.click(await screen.findByTestId('correct-answer'));
+    userEvent.click(screen.getByTestId('btn-next'));
+
+    expect(history.location.pathname).toBe('/feedback');
+  });
+  test('Test the score system', async () => {
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(triviaSuccess),
+    });
+
+    localStorage.setItem('token', null);
+
+    renderWithRouterAndRedux(<App />);
+
+    expect(localStorage.getItem('token')).toBe('null');
   });
 });
