@@ -61,10 +61,10 @@ class Game extends Component {
     const { count } = this.state;
     const MAX_COUNT = 4;
     if (count === MAX_COUNT) {
-      history.push('/feedback');
+      dispatch(questionAnswered(false));
+      return history.push('/feedback');
     }
-    this.setState((prev) => ({ count: prev.count <= MAX_COUNT
-      ? prev.count + 1 : prev.count }));
+    this.setState((prev) => ({ count: prev.count + 1 }));
     dispatch(questionAnswered(false));
   };
 
