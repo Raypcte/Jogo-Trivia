@@ -1,17 +1,17 @@
-import renderWithRouterAndRedux from "./helpers/renderWithRouterAndRedux";
-import { screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import App from "../App";
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import renderWithRouterAndRedux from './helpers/renderWithRouterAndRedux';
+import App from '../App';
 
 describe('Test the Game page', () => {
   const userInfo = {
     email: 'user@test.com',
     name: 'User',
-  }
+  };
   const userInfoFalse = {
     email: 'usertest.com',
     name: 'User',
-  }
+  };
 
   test('Test if the button redirects to the Settings page', () => {
     const { history } = renderWithRouterAndRedux(<App />);

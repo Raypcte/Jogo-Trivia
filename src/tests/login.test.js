@@ -1,17 +1,17 @@
-import renderWithRouterAndRedux from "./helpers/renderWithRouterAndRedux";
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import renderWithRouterAndRedux from './helpers/renderWithRouterAndRedux';
 import App from '../App';
-import { screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 
 describe('Test the Login page', () => {
   const userInfo = {
     email: 'user@test.com',
     name: 'User',
-  }
+  };
   const userInfoFalse = {
     email: 'usertest.com',
     name: 'User',
-  }
+  };
 
   test('Test if the button is disabled while the inputs are blank', () => {
     renderWithRouterAndRedux(<App />);
