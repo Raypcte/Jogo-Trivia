@@ -13,6 +13,9 @@ function Timer() {
     const interval = setInterval(() => {
       if (seconds > 0 && !answered) {
         setTime(seconds - 1);
+      } else {
+        console.log('Else fela da...');
+        clearInterval(interval);
       }
     }, SECONDS);
     dispatch(questionTimer(seconds));
@@ -24,8 +27,7 @@ function Timer() {
   return (
     <div>
       <span>
-        Tempo restante:
-        {seconds}
+        {`Tempo restante: ${seconds}`}
       </span>
     </div>
   );
